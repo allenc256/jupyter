@@ -1,0 +1,615 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Initial equations:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+a & = & \mbox{softmax}(z)\\
+z & = & Wx+b
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cross-entropy loss:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+L=CE(y,a)=-y^{\top}\log a=-\sum_{i=1}^{n}y_{i}\log a_{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Chain rule:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{dL}{dz}=\frac{dL}{da}\frac{da}{dz}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Partial derivative #1:
+\begin_inset Formula 
+\[
+\frac{\partial L}{\partial a_{i}}=-\frac{y_{i}}{a_{i}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Or vectorized (element-wise division):
+\begin_inset Formula 
+\[
+\frac{dL}{da}=\left(-\frac{y}{a}\right)^{\top}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Partial derivative #2:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{\partial a_{i}}{\partial z_{j}} & = & \frac{\partial}{\partial z_{j}}\frac{e^{z_{i}}}{\sum_{k}e^{z_{k}}}\nonumber \\
+ & = & \frac{\partial}{\partial z_{j}}e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-1}\label{eq:p2a}\\
+ & = & \left(\frac{\partial}{\partial z_{j}}e^{z_{i}}\right)\left(\sum_{k}e^{z_{k}}\right)^{-1}+e^{z_{i}}\frac{\partial}{\partial z_{j}}\left(\sum_{k}e^{z_{k}}\right)^{-1}\label{eq:p2b}\\
+ & = & \delta_{ij}e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-1}-e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-2}\frac{\partial}{\partial z_{j}}\sum_{k}e^{z_{k}}\label{eq:p2c}\\
+ & = & \delta_{ij}e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-1}-e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-2}e^{z_{j}}\label{eq:p2d}\\
+ & = & \delta_{ij}a_{i}-a_{i}a_{j}\label{eq:p2e}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Explanation:
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p2a"
+
+\end_inset
+
+) - rewrite quotient as product
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p2b"
+
+\end_inset
+
+) - differentiate using product-rule
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p2c"
+
+\end_inset
+
+) - first partial written using kronecker delta (
+\begin_inset Formula $\delta_{ij}$
+\end_inset
+
+); second partial differentiate with chain rule
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p2d"
+
+\end_inset
+
+) - simplify second partial
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p2e"
+
+\end_inset
+
+) - simplify by substituting 
+\begin_inset Formula $a_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $a_{j}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Vectorized:
+\begin_inset Formula 
+\[
+\frac{da}{dz}=\mbox{diag}(a)-aa^{\top}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Chain rule:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{dL}{dz} & = & \frac{dL}{da}\frac{da}{dz}\nonumber \\
+ & = & \left(-\frac{y}{a}\right)^{\top}\left(\mbox{diag}(a)-aa^{\top}\right)\label{eq:p3a}\\
+ & = & \left(-\frac{y}{a}\right)^{\top}\mbox{diag}(a)-\left(-\frac{y}{a}\right)^{\top}aa^{\top}\label{eq:p3b}\\
+ & = & a-y\label{eq:p3c}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Explanation:
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p3a"
+
+\end_inset
+
+) - substitute jacobians derived above
+\end_layout
+
+\begin_layout Itemize
+eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p3b"
+
+\end_inset
+
+) - associativity
+\end_layout
+
+\begin_layout Standard
+For eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:p3c"
+
+\end_inset
+
+) we let 
+\begin_inset Formula 
+\begin{eqnarray*}
+p & = & \left(-\frac{y}{a}\right)^{\top}\mbox{diag}(a)\\
+q & = & \left(-\frac{y}{a}\right)^{\top}aa^{\mathsf{\top}}
+\end{eqnarray*}
+
+\end_inset
+
+then note that
+\begin_inset Formula 
+\[
+p_{i}=\left(-\frac{y_{i}}{a_{i}}\right)a_{i}=-y_{i}
+\]
+
+\end_inset
+
+implying that
+\begin_inset Formula 
+\[
+p=-y
+\]
+
+\end_inset
+
+and
+\begin_inset Formula 
+\begin{eqnarray*}
+q_{i} & = & \sum_{j}\left(-\frac{y_{j}}{a_{j}}\right)a_{i}a_{j}\\
+ & = & a_{i}\sum_{j}y_{j}\\
+ & = & a_{i}
+\end{eqnarray*}
+
+\end_inset
+
+assuming that 
+\begin_inset Formula $\sum_{j}y_{j}=1$
+\end_inset
+
+ since assume that 
+\begin_inset Formula $y$
+\end_inset
+
+ represents a probability distribution.
+ This implies
+\begin_inset Formula 
+\[
+q=a.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Vectorize across 
+\begin_inset Formula $m$
+\end_inset
+
+ examples.
+ Suppose
+\begin_inset Formula 
+\begin{eqnarray*}
+A & = & \mbox{softmax}(Z)\\
+Z & = & WX+b
+\end{eqnarray*}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{eqnarray*}
+A & = & \underbrace{\left[\begin{array}{ccc}
+| &  & |\\
+a^{(1)} & \cdots & a^{(m)}\\
+| &  & |
+\end{array}\right]}_{n^{[1]}\times m}\\
+Z & = & \underbrace{\left[\begin{array}{ccc}
+| &  & |\\
+z^{(1)} & \cdots & z^{(m)}\\
+| &  & |
+\end{array}\right]}_{n^{[1]}\times m}\\
+W & = & \underbrace{\left[\begin{array}{ccc}
+\mbox{---} & W_{1,\bullet} & \mbox{---}\\
+ & \vdots\\
+\mbox{---} & W_{n^{[1]},\bullet} & \mbox{---}
+\end{array}\right]}_{n^{[1]}\times n^{[0]}}\\
+X & = & \underbrace{\left[\begin{array}{ccc}
+| &  & |\\
+x^{(1)} & \cdots & x^{(m)}\\
+| &  & |
+\end{array}\right]}_{n^{[0]}\times m}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Define cost as average cross-entropy loss over 
+\begin_inset Formula $m$
+\end_inset
+
+ examples
+\begin_inset Formula 
+\[
+J(W,b)=\frac{1}{m}\sum_{i=1}^{m}CE(y^{(i)},a^{(i)})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Define the (generalized) jacobian via the generalized chain rule
+\begin_inset Formula 
+\[
+\underbrace{\frac{dJ}{dW}}_{(1)\times(n^{[1]}\times n^{[0]})}=\underbrace{\frac{dJ}{dZ}}_{(1)\times(n^{[1]}\times m)\hspace{1em}}\underbrace{\frac{dZ}{dW}}_{(n^{[1]}\times m)\times(n^{[1]}\times n^{[0]})}
+\]
+
+\end_inset
+
+Note that we extend the jacobian 
+\begin_inset Formula $dJ/dW$
+\end_inset
+
+ and 
+\begin_inset Formula $dJ/dZ$
+\end_inset
+
+ into generalized jacobians by treating 
+\begin_inset Formula $J$
+\end_inset
+
+ as a unit-sized tensor.
+ The generalized matrix multiplication over the tensors above is defined
+ as:
+\begin_inset Formula 
+\[
+\left(\frac{dJ}{dW}\right)_{\alpha,\beta}=\left(\frac{dJ}{dZ}\frac{dZ}{dW}\right)_{\alpha,\beta}=\sum_{\gamma}\left(\frac{dJ}{dZ}\right)_{\alpha,\gamma}\left(\frac{dZ}{dW}\right)_{\gamma,\beta}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\alpha\in\{(1)\}$
+\end_inset
+
+, 
+\begin_inset Formula $\beta\in(n^{[1]}\times n^{[0]})$
+\end_inset
+
+, and 
+\begin_inset Formula $\gamma\in(n^{[1]}\times m).$
+\end_inset
+
+ Or written out using explicit tuples:
+\begin_inset Formula 
+\[
+\left(\frac{dJ}{dW}\right)_{(1),(i,j)}=\sum_{(p,q)}\left(\frac{dJ}{dZ}\right)_{(1),(p,q)}\left(\frac{dZ}{dW}\right)_{(p,q),(i,j)}.
+\]
+
+\end_inset
+
+To keep notation cleaner (but possibly more confusing, frowny face), we'll
+ omit the indices for unit-sized tensors, so the above simplifies to:
+\begin_inset Formula 
+\[
+\left(\frac{dJ}{dW}\right)_{i,j}=\sum_{(p,q)}\left(\frac{dJ}{dZ}\right)_{p,q}\left(\frac{dZ}{dW}\right)_{(p,q),(i,j)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now note that the first component jacobian is:
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{dJ}{dZ} & = & \underbrace{\left[\begin{array}{ccc}
+| &  & |\\
+\frac{dJ}{dz^{(1)}} & \cdots & \frac{dJ}{dz^{(m)}}\\
+| &  & |
+\end{array}\right]}_{n^{[1]}\times m}
+\end{eqnarray*}
+
+\end_inset
+
+Next note that
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{dJ}{dz^{(i)}} & = & \frac{d}{dz^{(i)}}\left(\frac{1}{m}\sum_{j=1}^{m}CE(y^{(j)},a^{(j)})\right)\\
+ & = & \frac{1}{m}\frac{d}{dz^{(i)}}CE(y^{(i)},a^{(i)})\\
+ & = & \frac{1}{m}(a^{(i)}-y^{(i)})
+\end{eqnarray*}
+
+\end_inset
+
+given the fact that for 
+\begin_inset Formula $i\ne j$
+\end_inset
+
+ we have 
+\begin_inset Formula $\frac{d}{dz^{(i)}}CE(y^{(j)},a^{(j)})=0,$
+\end_inset
+
+ and we derived the formula for 
+\begin_inset Formula $\frac{d}{dz^{(i)}}CE(y^{(i)},a^{(i)})$
+\end_inset
+
+ previously.
+ If we substitute this result in our original decomposition for 
+\begin_inset Formula $dJ/dZ,$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\[
+\frac{dJ}{dZ}=\frac{1}{m}(A-Y).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next, derive the second component jacobian 
+\begin_inset Formula $dZ/dW$
+\end_inset
+
+ by looking at an element-wise definition:
+\begin_inset Formula 
+\begin{eqnarray*}
+\left(\frac{dZ}{dW}\right)_{(i,j)\times(p,q)} & = & \frac{\partial Z_{i,j}}{\partial W_{p,q}}\\
+ & = & \frac{\partial}{\partial W_{p,q}}\left(\sum_{k}W_{i,k}X_{k,j}+b_{i}\right)\\
+ & = & \delta_{ip}X_{q,j}
+\end{eqnarray*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\delta_{ip}$
+\end_inset
+
+ is the Kronecker delta function.
+\end_layout
+
+\begin_layout Standard
+Finally, let's compute the product of the component Jacobians:
+\begin_inset Formula 
+\begin{eqnarray*}
+\left(\frac{dJ}{dW}\right)_{i,j} & = & \sum_{(p,q)}\left(\frac{dJ}{dZ}\right)_{p,q}\left(\frac{dZ}{dW}\right)_{(p,q),(i,j)}\\
+ & = & \sum_{(p,q)}\left(\frac{dJ}{dZ}\right)_{p,q}\delta_{ip}X_{j,q}\\
+ & = & \sum_{q}\left(\frac{dJ}{dZ}\right)_{i,q}X_{j,q}
+\end{eqnarray*}
+
+\end_inset
+
+where we only need to sum over columns (e.g., examples) because of the Kronecker
+ delta.
+ Fully vectorized, the above simplifies to:
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{dJ}{dW} & = & \frac{dJ}{dZ}X^{\top}\\
+ & = & \frac{1}{m}(A-Y)X^{\top}.
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now let's derive
+\begin_inset Formula 
+\[
+\frac{dJ}{db}=\frac{dJ}{dZ}\frac{dZ}{db}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We already have 
+\begin_inset Formula $dJ/dZ,$
+\end_inset
+
+ so just need to figure out 
+\begin_inset Formula $dZ/db.$
+\end_inset
+
+ Figure out partials: 
+\begin_inset Formula 
+\[
+\frac{\partial Z_{i,j}}{\partial b_{p}}=\frac{\partial}{\partial b_{p}}\left(\sum_{k}W_{i,k}X_{k,j}+b_{i}\right)=\delta_{ip}.
+\]
+
+\end_inset
+
+Plugging into chain rule
+\begin_inset Formula 
+\begin{eqnarray*}
+\left(\frac{dJ}{db}\right)_{i} & = & \sum_{(p,q)}\left(\frac{dJ}{dZ}\right)_{p,q}\left(\frac{dZ}{db}\right)_{(p,q),i}\\
+ & = & \sum_{(p,q)}\left(\frac{dJ}{dZ}\right)_{p,q}\delta_{ip}\\
+ & = & \sum_{q}\left(\frac{dJ}{dZ}\right)_{i,q}.
+\end{eqnarray*}
+
+\end_inset
+
+In other words, a fully-vectorized implementation would simply sum the rows
+ of 
+\begin_inset Formula $dJ/dZ$
+\end_inset
+
+ to compute the Jacobian.
+\end_layout
+
+\end_body
+\end_document
