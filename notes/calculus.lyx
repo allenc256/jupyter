@@ -1,0 +1,157 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Proposition
+Let 
+\begin_inset Formula $y=Wx.$
+\end_inset
+
+ Then 
+\begin_inset Formula 
+\[
+\frac{dy}{dx}=W
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Take partial derivatives
+\begin_inset Formula 
+\[
+\frac{\partial y_{i}}{\partial x_{j}}=\frac{\partial}{\partial x_{j}}\sum_{k}W_{i,k}x_{k}=W_{i,j}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+Let 
+\begin_inset Formula $y=Wx,$
+\end_inset
+
+ where 
+\begin_inset Formula $W$
+\end_inset
+
+ is an 
+\begin_inset Formula $m\times n$
+\end_inset
+
+ matrix.
+ Then 
+\begin_inset Formula $dy/dW$
+\end_inset
+
+ is a 
+\begin_inset Formula $(m)\times(m\times n)$
+\end_inset
+
+ tensor defined by
+\begin_inset Formula 
+\[
+\left(\frac{dy}{dW}\right)_{(i),(p,q)}=\delta_{ip}x_{q}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\delta_{ip}$
+\end_inset
+
+ is the Kronecker delta function.
+\end_layout
+
+\begin_layout Proof
+Take partials:
+\begin_inset Formula 
+\[
+\left(\frac{\partial y}{\partial W}\right)_{(i),(p,q)}=\frac{\partial y_{i}}{\partial W_{p,q}}=\frac{\partial}{\partial W_{p,q}}\sum_{k}W_{i,k}x_{k}=\delta_{ip}x_{q}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
