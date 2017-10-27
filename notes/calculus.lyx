@@ -470,7 +470,7 @@ where
 \end_layout
 
 \begin_layout Proof
-Taking partial derivaties:
+Taking partial derivatives:
 \begin_inset Formula 
 \begin{align}
 \frac{\partial a_{i}}{\partial z_{j}} & =\frac{\partial}{\partial z_{j}}\left(2\sigma(2z_{i})-1\right)\nonumber \\
@@ -498,8 +498,8 @@ reference "eq:tanh_deriv_1"
 \begin_inset Formula $\partial a_{i}/\partial z_{j}$
 \end_inset
 
- is non-zero only when 
-\begin_inset Formula $i=j$
+ is zero only when 
+\begin_inset Formula $i\ne j$
 \end_inset
 
 .
@@ -750,7 +750,7 @@ Loss Functions
 status open
 
 \begin_layout Plain Layout
-Jacobian of cross-entropy loss
+Gradient of cross-entropy loss
 \end_layout
 
 \end_inset
@@ -807,7 +807,7 @@ Taking partial derivatives:
 status open
 
 \begin_layout Plain Layout
-Jacobian of softmax cross-entropy loss
+Gradient of softmax cross-entropy loss
 \end_layout
 
 \end_inset
@@ -827,7 +827,7 @@ Let
  Then
 \begin_inset Formula 
 \[
-\frac{dL}{dz}=a-y.
+\frac{dL}{dz}=\left(a-y\right)^{\top}.
 \]
 
 \end_inset
@@ -842,7 +842,7 @@ Applying the chain rule:
 \frac{dL}{dz} & = & \frac{dL}{da}\frac{da}{dz}\nonumber \\
  & = & -\left(y\oslash a\right)^{\top}\left(\mbox{diag}(a)-aa^{\top}\right)\label{eq:cross_entropy_deriv_1}\\
  & = & -\left(y\oslash a\right)^{\top}\mbox{diag}(a)+\left(y\oslash a\right)aa^{\top}\label{eq:cross_entropy_deriv_2}\\
- & = & a-y\label{eq:cross_entropy_deriv_3}
+ & = & \left(a-y\right)^{\top}\label{eq:cross_entropy_deriv_3}
 \end{eqnarray}
 
 \end_inset
