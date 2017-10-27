@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass amsart
+\textclass article
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -76,37 +76,22 @@ figs-within-sections
 
 \begin_body
 
-\begin_layout Proposition
-Let 
-\begin_inset Formula $y=Wx.$
-\end_inset
-
- Then 
-\begin_inset Formula 
-\[
-\frac{dy}{dx}=W
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Proof
-Take partial derivatives
-\begin_inset Formula 
-\[
-\frac{\partial y_{i}}{\partial x_{j}}=\frac{\partial}{\partial x_{j}}\sum_{k}W_{i,k}x_{k}=W_{i,j}.
-\]
-
-\end_inset
-
-
+\begin_layout Section
+Linear Functions
 \end_layout
 
 \begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobians of linear function, single example
+\end_layout
+
+\end_inset
+
 Let 
-\begin_inset Formula $y=Wx,$
+\begin_inset Formula $z=Wx+b,$
 \end_inset
 
  where 
@@ -118,23 +103,29 @@ Let
 \end_inset
 
  matrix.
- Then 
-\begin_inset Formula $dy/dW$
+ Then the various Jacobians of 
+\begin_inset Formula $z$
 \end_inset
 
- is a 
-\begin_inset Formula $(m)\times(m\times n)$
-\end_inset
-
- tensor defined by
+ are given by:
 \begin_inset Formula 
-\[
-\left(\frac{dy}{dW}\right)_{(i),(p,q)}=\delta_{ip}x_{q}
-\]
+\begin{align*}
+\left(\frac{dz}{dW}\right)_{(i),(p,q)} & =\delta_{ip}x_{q}\\
+\frac{dz}{dx} & =W\\
+\frac{dz}{db} & =I
+\end{align*}
 
 \end_inset
 
 where 
+\begin_inset Formula $dz/dW$
+\end_inset
+
+ is an 
+\begin_inset Formula $(m)\times(m\times n)$
+\end_inset
+
+ tensor and 
 \begin_inset Formula $\delta_{ip}$
 \end_inset
 
@@ -142,10 +133,455 @@ where
 \end_layout
 
 \begin_layout Proof
-Take partials:
+Taking partial derivatives for 
+\begin_inset Formula $dz/dW$
+\end_inset
+
+:
 \begin_inset Formula 
 \[
-\left(\frac{\partial y}{\partial W}\right)_{(i),(p,q)}=\frac{\partial y_{i}}{\partial W_{p,q}}=\frac{\partial}{\partial W_{p,q}}\sum_{k}W_{i,k}x_{k}=\delta_{ip}x_{q}.
+\left(\frac{\partial z}{\partial W}\right)_{(i),(p,q)}=\frac{\partial z_{i}}{\partial W_{p,q}}=\frac{\partial}{\partial W_{p,q}}\sum_{k}W_{i,k}x_{k}+b_{i}=\delta_{ip}x_{q}.
+\]
+
+\end_inset
+
+Taking partial derivatives for 
+\begin_inset Formula $dz/dx$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\frac{\partial z_{i}}{\partial x_{j}}=\frac{\partial}{\partial x_{j}}\sum_{k}W_{i,k}x_{k}+b_{i}=W_{i,j}.
+\]
+
+\end_inset
+
+Taking partial derivatives for 
+\begin_inset Formula $dz/db$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial z_{i}}{\partial b_{j}} & =\frac{\partial}{\partial b_{j}}\left(\sum_{k}W_{i,k}x_{k}+b_{i}\right)\\
+ & =\frac{\partial}{\partial b_{j}}b_{i}\\
+ & =\delta_{ij}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobians of linear function, multiple examples
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $Z=WX+\textnormal{broadcast}(b)$
+\end_inset
+
+ where 
+\begin_inset Formula $Z$
+\end_inset
+
+ is a 
+\begin_inset Formula $n\times m$
+\end_inset
+
+ matrix, 
+\begin_inset Formula $W$
+\end_inset
+
+ is a 
+\begin_inset Formula $n\times r$
+\end_inset
+
+ matrix, 
+\begin_inset Formula $X$
+\end_inset
+
+ is a 
+\begin_inset Formula $r\times m$
+\end_inset
+
+ matrix, and 
+\begin_inset Formula $b$
+\end_inset
+
+ is a 
+\begin_inset Formula $n\times1$
+\end_inset
+
+ vector.
+ Then the various Jacobians of 
+\begin_inset Formula $Z$
+\end_inset
+
+ are given by:
+\begin_inset Formula 
+\begin{align*}
+\left(\frac{dZ}{dW}\right)_{(i,j),(p,q)} & =\delta_{ip}X_{q,j}\\
+\left(\frac{dZ}{dX}\right)_{(i,j),(p,q)} & =\delta_{jq}W_{i,p}\\
+\left(\frac{dZ}{db}\right)_{(i,j),(p)} & =\delta_{ip}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $dZ/dW$
+\end_inset
+
+ is a 
+\begin_inset Formula $(n\times m)\times(n\times r),$
+\end_inset
+
+ 
+\begin_inset Formula $dZ/dX$
+\end_inset
+
+ is a 
+\begin_inset Formula $(n\times m)\times(r\times m)$
+\end_inset
+
+ tensor, and 
+\begin_inset Formula $dZ/db$
+\end_inset
+
+ is a 
+\begin_inset Formula $(n\times m)\times(n)$
+\end_inset
+
+ tensor and 
+\begin_inset Formula $\delta$
+\end_inset
+
+ is the Kronecker delta function.
+\end_layout
+
+\begin_layout Proof
+Taking partial derivatives for 
+\begin_inset Formula $dZ/dX$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial Z_{i,j}}{\partial X_{p,q}} & =\frac{\partial}{\partial X_{p,q}}\left(\sum_{k}W_{i,k}X_{k,j}+b_{i}\right)\\
+ & =\delta_{jq}\frac{\partial}{\partial X_{p,j}}\left(\sum_{k}W_{i,k}X_{k,j}+b_{i}\right)\\
+ & =\delta_{jq}W_{i,p}.
+\end{align*}
+
+\end_inset
+
+Calculations for 
+\begin_inset Formula $dZ/dW$
+\end_inset
+
+ and 
+\begin_inset Formula $dZ/db$
+\end_inset
+
+ are omitted because they are similar to the above.
+\end_layout
+
+\begin_layout Section
+Non-Linear (Activation) Functions
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobian of sigmoid
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $a=\textnormal{sigmoid}(z)=\sigma(z).$
+\end_inset
+
+ Then
+\begin_inset Formula 
+\[
+\frac{da}{dz}=\textnormal{diag}\left(a\odot(1-a)\right)
+\]
+
+\end_inset
+
+with partial derivatives given by
+\begin_inset Formula 
+\[
+\frac{\partial a_{i}}{\partial z_{j}}=\delta_{ij}a_{i}(1-a_{i})
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\odot$
+\end_inset
+
+ represents the Hadamard (element-wise) product and 
+\begin_inset Formula $\delta_{ij}$
+\end_inset
+
+ represents the Kronecker delta function.
+\end_layout
+
+\begin_layout Proof
+Taking partial derivatives:
+\begin_inset Formula 
+\begin{align}
+\frac{\partial a_{i}}{\partial z_{j}} & =\frac{\partial}{\partial z_{j}}\left(\frac{1}{1+e^{-z_{i}}}\right)\nonumber \\
+ & =\delta_{ij}\frac{\partial}{\partial z_{i}}\left(\frac{1}{1+e^{-z_{i}}}\right)\label{eq:sigmoid_deriv_1}\\
+ & =-\delta_{ij}\frac{1}{\left(1+e^{-z_{i}}\right)^{2}}\frac{\partial}{\partial z_{i}}\left(1+e^{-z_{i}}\right)\label{eq:sigmoid_deriv_2}\\
+ & =\delta_{ij}\frac{e^{z_{i}}}{\left(1+e^{-z_{i}}\right)^{2}}\label{eq:sigmoid_deriv_3}\\
+ & =\delta_{ij}a_{i}(1-a_{i})\label{eq:sigmoid_deriv_4}
+\end{align}
+
+\end_inset
+
+with individual steps explained below:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:sigmoid_deriv_1"
+
+\end_inset
+
+) - we note that 
+\begin_inset Formula $\partial a_{i}/\partial z_{j}$
+\end_inset
+
+ is only non-zero when 
+\begin_inset Formula $i=j,$
+\end_inset
+
+ so we can compute in terms of 
+\begin_inset Formula $\partial a_{i}/\partial z_{i}.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:sigmoid_deriv_2"
+
+\end_inset
+
+) - apply the chain rule.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:sigmoid_deriv_3"
+
+\end_inset
+
+) - simplify the partial derivatives.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:sigmoid_deriv_4"
+
+\end_inset
+
+) - simplify by substituting the definition of 
+\begin_inset Formula $a_{i}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Proof
+Lastly, we note that we can write the element-wise definition of the Jacobian
+ compactly as 
+\begin_inset Formula $\textnormal{diag}(a\odot(1-a)).$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobian of tanh
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $a=\textnormal{tanh}(z).$
+\end_inset
+
+ Then
+\begin_inset Formula 
+\[
+\frac{da}{dz}=\textnormal{diag}\left(1-a^{\odot2}\right)
+\]
+
+\end_inset
+
+ with partial derivatives
+\begin_inset Formula 
+\[
+\frac{\partial a_{i}}{\partial z_{j}}=\delta_{ij}\left(1-a_{i}^{2}\right)
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $a^{\odot2}$
+\end_inset
+
+ denotes the Hadamard (element-wise) square of the vector 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $\delta_{ij}$
+\end_inset
+
+ is the Kronecker delta function.
+\end_layout
+
+\begin_layout Proof
+Taking partial derivaties:
+\begin_inset Formula 
+\begin{align}
+\frac{\partial a_{i}}{\partial z_{j}} & =\frac{\partial}{\partial z_{j}}\left(2\sigma(2z_{i})-1\right)\nonumber \\
+ & =\delta_{ij}\frac{\partial}{\partial z_{i}}\left(2\sigma(2z_{i})-1\right)\label{eq:tanh_deriv_1}\\
+ & =\delta_{ij}2\sigma(2z_{i})(1-\sigma(2z_{i}))\frac{\partial}{\partial z_{i}}2z_{i}\label{eq:tanh_deriv_2}\\
+ & =\delta_{ij}4\sigma(2z_{i})(1-\sigma(2z_{i}))\label{eq:tanh_deriv_3}\\
+ & =\delta_{ij}(1-a_{i}^{2})\label{eq:tanh_deriv_4}
+\end{align}
+
+\end_inset
+
+with individual steps explained below:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:tanh_deriv_1"
+
+\end_inset
+
+) - note that 
+\begin_inset Formula $\partial a_{i}/\partial z_{j}$
+\end_inset
+
+ is non-zero only when 
+\begin_inset Formula $i=j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:tanh_deriv_2"
+
+\end_inset
+
+) - apply the derivative 
+\begin_inset Formula $d\sigma(x)/dx=\sigma(x)(1-\sigma(x))$
+\end_inset
+
+ (calculated above) with the chain rule.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:tanh_deriv_3"
+
+\end_inset
+
+) - simplify the partial derivative.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:tanh_deriv_4"
+
+\end_inset
+
+) - simplify using the identity 
+\begin_inset Formula $\sigma(2z)=(a+1)/2.$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Proof
+Lastly, we note that we can write the element-wise definition of the Jacobian
+ compactly as 
+\begin_inset Formula $\textnormal{diag}(1-a^{\odot2}).$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobian of softmax
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $a=\textnormal{softmax}(z).$
+\end_inset
+
+ Then
+\begin_inset Formula 
+\[
+\frac{da}{dz}=\textnormal{diag}(a)-aa^{\top}
+\]
+
+\end_inset
+
+with partial derivatives given by
+\begin_inset Formula 
+\[
+\frac{\partial a_{i}}{\partial z_{j}}=\delta_{ij}a_{i}-a_{i}a_{j}.
 \]
 
 \end_inset
@@ -153,5 +589,323 @@ Take partials:
 
 \end_layout
 
+\begin_layout Proof
+Taking partials:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{\partial a_{i}}{\partial z_{j}} & = & \frac{\partial}{\partial z_{j}}\frac{e^{z_{i}}}{\sum_{k}e^{z_{k}}}\nonumber \\
+ & = & \frac{\partial}{\partial z_{j}}e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-1}\label{eq:softmax_deriv_1}\\
+ & = & \left(\frac{\partial}{\partial z_{j}}e^{z_{i}}\right)\left(\sum_{k}e^{z_{k}}\right)^{-1}+e^{z_{i}}\frac{\partial}{\partial z_{j}}\left(\sum_{k}e^{z_{k}}\right)^{-1}\label{eq:softmax_deriv_2}\\
+ & = & \delta_{ij}e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-1}-e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-2}\frac{\partial}{\partial z_{j}}\sum_{k}e^{z_{k}}\label{eq:softmax_deriv_3}\\
+ & = & \delta_{ij}e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-1}-e^{z_{i}}\left(\sum_{k}e^{z_{k}}\right)^{-2}e^{z_{j}}\label{eq:softmax_deriv_4}\\
+ & = & \delta_{ij}a_{i}-a_{i}a_{j}\label{eq:softmax_deriv_5}
+\end{eqnarray}
+
+\end_inset
+
+with individual steps explained below:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:softmax_deriv_1"
+
+\end_inset
+
+) - the quotient is rewritten as a product.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:softmax_deriv_2"
+
+\end_inset
+
+) - the product rule for derivatives is applied.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:softmax_deriv_3"
+
+\end_inset
+
+) - the first partial derivative is 
+\begin_inset Formula $e^{z_{i}}$
+\end_inset
+
+ if 
+\begin_inset Formula $i=j$
+\end_inset
+
+ and 
+\begin_inset Formula $0$
+\end_inset
+
+ elsewhere, which is simplified to 
+\begin_inset Formula $\delta_{ij}$
+\end_inset
+
+
+\begin_inset Formula $e^{z_{i}}$
+\end_inset
+
+ where 
+\begin_inset Formula $\delta_{ij}$
+\end_inset
+
+ is the Kronecker delta function.
+ The second partial derivative is simplified by applying the chain rule.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:softmax_deriv_4"
+
+\end_inset
+
+) - the partial derivative is simplified to simply 
+\begin_inset Formula $e^{z_{j}}.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:softmax_deriv_5"
+
+\end_inset
+
+) - the expression is simplified further by substituting 
+\begin_inset Formula $a_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $a_{j}.$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Proof
+Finally, we look for a more concise form for 
+\begin_inset Formula $da/dz$
+\end_inset
+
+.
+ We note that we can write 
+\begin_inset Formula $da/dz$
+\end_inset
+
+ more concisely as 
+\begin_inset Formula $\textnormal{diag}(a)-aa^{\top},$
+\end_inset
+
+ given that the matrices 
+\begin_inset Formula $\textnormal{diag}(a)$
+\end_inset
+
+ and 
+\begin_inset Formula $aa^{\top}$
+\end_inset
+
+ are given by
+\begin_inset Formula 
+\[
+\left(\textnormal{diag}(a)\right)_{i,j}=\delta_{ij}a_{i}
+\]
+
+\end_inset
+
+ and 
+\begin_inset Formula 
+\[
+\left(aa^{\top}\right)_{i,j}=a_{i}a_{j}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Loss Functions
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobian of cross-entropy loss
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $L=\textnormal{CE}(y,a).$
+\end_inset
+
+ Then
+\begin_inset Formula 
+\[
+\frac{dL}{da}=-\left(y\oslash a\right)^{\top}
+\]
+
+\end_inset
+
+and
+\begin_inset Formula 
+\[
+\frac{\partial L}{\partial a_{i}}=-\frac{y_{i}}{a_{i}}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $y\oslash a$
+\end_inset
+
+ is the Hadamard (element-wise) division of vectors 
+\begin_inset Formula $y$
+\end_inset
+
+ and 
+\begin_inset Formula $a.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Taking partial derivatives:
+\begin_inset Formula 
+\[
+\frac{\partial L}{\partial a_{i}}=\frac{\partial}{\partial a_{i}}\left(-\sum_{j}y_{j}\log a_{j}\right)=\frac{\partial}{\partial a_{i}}\left(-y_{i}\log a_{i}\right)=-\frac{y_{i}}{a_{i}}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Jacobian of softmax cross-entropy loss
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $L=\textnormal{CE}(y,a),$
+\end_inset
+
+ 
+\begin_inset Formula $a=\textnormal{softmax}(z),$
+\end_inset
+
+ and 
+\begin_inset Formula $\sum_{i}y_{i}=1.$
+\end_inset
+
+ Then
+\begin_inset Formula 
+\[
+\frac{dL}{dz}=a-y.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Applying the chain rule:
+\begin_inset Formula 
+\begin{eqnarray}
+\frac{dL}{dz} & = & \frac{dL}{da}\frac{da}{dz}\nonumber \\
+ & = & -\left(y\oslash a\right)^{\top}\left(\mbox{diag}(a)-aa^{\top}\right)\label{eq:cross_entropy_deriv_1}\\
+ & = & -\left(y\oslash a\right)^{\top}\mbox{diag}(a)+\left(y\oslash a\right)aa^{\top}\label{eq:cross_entropy_deriv_2}\\
+ & = & a-y\label{eq:cross_entropy_deriv_3}
+\end{eqnarray}
+
+\end_inset
+
+with individual steps explained below:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cross_entropy_deriv_1"
+
+\end_inset
+
+) - substitute the Jacobians derived previously.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cross_entropy_deriv_2"
+
+\end_inset
+
+) - distributivity of matrix multiplication over addition.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cross_entropy_deriv_3"
+
+\end_inset
+
+) - simplification by expanding out the element-wise definitions:
+\begin_inset Formula 
+\[
+\left(-\left(y\oslash a\right)^{\top}\mbox{diag}(a)\right)_{i}=-\left(\frac{y_{i}}{a_{i}}\right)a_{i}=-y_{i}
+\]
+
+\end_inset
+
+and
+\begin_inset Formula 
+\begin{align*}
+\left(\left(y\oslash a\right)^{\top}aa^{\top}\right)_{i} & =\sum_{j}\left(\frac{y_{j}}{a_{j}}\right)a_{i}a_{j}\\
+ & =a_{i}\sum_{j}y_{j}\\
+ & =a_{i}
+\end{align*}
+
+\end_inset
+
+where we note that 
+\begin_inset Formula $\sum_{j}y_{j}=1$
+\end_inset
+
+ by assumption.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
