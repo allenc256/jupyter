@@ -140,7 +140,7 @@ Taking partial derivatives for
 :
 \begin_inset Formula 
 \[
-\left(\frac{\partial z}{\partial W}\right)_{(i),(p,q)}=\frac{\partial z_{i}}{\partial W_{p,q}}=\frac{\partial}{\partial W_{p,q}}\sum_{k}W_{i,k}x_{k}+b_{i}=\delta_{ip}x_{q}.
+\left(\frac{\partial z}{\partial W}\right)_{(i),(p,q)}=\frac{\partial z_{i}}{\partial W_{p,q}}=\frac{\partial}{\partial W_{p,q}}\left(b_{i}+\sum_{k}W_{i,k}x_{k}\right)=\delta_{ip}x_{q}.
 \]
 
 \end_inset
@@ -152,7 +152,7 @@ Taking partial derivatives for
 :
 \begin_inset Formula 
 \[
-\frac{\partial z_{i}}{\partial x_{j}}=\frac{\partial}{\partial x_{j}}\sum_{k}W_{i,k}x_{k}+b_{i}=W_{i,j}.
+\frac{\partial z_{i}}{\partial x_{j}}=\frac{\partial}{\partial x_{j}}\left(b_{i}+\sum_{k}W_{i,k}x_{k}\right)=W_{i,j}.
 \]
 
 \end_inset
@@ -164,7 +164,7 @@ Taking partial derivatives for
 :
 \begin_inset Formula 
 \begin{align*}
-\frac{\partial z_{i}}{\partial b_{j}} & =\frac{\partial}{\partial b_{j}}\left(\sum_{k}W_{i,k}x_{k}+b_{i}\right)\\
+\frac{\partial z_{i}}{\partial b_{j}} & =\frac{\partial}{\partial b_{j}}\left(b_{i}+\sum_{k}W_{i,k}x_{k}\right)\\
  & =\frac{\partial}{\partial b_{j}}b_{i}\\
  & =\delta_{ij}.
 \end{align*}
@@ -172,6 +172,149 @@ Taking partial derivatives for
 \end_inset
 
 
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Chain rule for linear function, single example
+\end_layout
+
+\end_inset
+
+Let 
+\begin_inset Formula $z=Wx+b$
+\end_inset
+
+ where 
+\begin_inset Formula $W$
+\end_inset
+
+ is an 
+\begin_inset Formula $m\times n$
+\end_inset
+
+ matrix, and let 
+\begin_inset Formula $\ell=f(z)$
+\end_inset
+
+ where 
+\begin_inset Formula $\ell$
+\end_inset
+
+ is a scalar.
+ Then
+\begin_inset Formula 
+\begin{align*}
+\frac{d\ell}{dW} & =\left(\frac{d\ell}{dz}\right)^{\top}x^{\top}\\
+\frac{d\ell}{dx} & =\frac{d\ell}{dz}W\\
+\frac{d\ell}{db} & =\frac{d\ell}{dz}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+To compute 
+\begin_inset Formula $d\ell/dW,$
+\end_inset
+
+ apply the chain rule for generalized Jacobians:
+\begin_inset Formula 
+\[
+\frac{d\ell}{dW}=\frac{d\ell}{dz}\frac{dz}{dW}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $d\ell/dW$
+\end_inset
+
+ is a 
+\begin_inset Formula $(1)\times(m\times n)$
+\end_inset
+
+ generalized Jacobian, 
+\begin_inset Formula $d\ell/dz$
+\end_inset
+
+ is 
+\begin_inset Formula $(1)\times(m)$
+\end_inset
+
+, and 
+\begin_inset Formula $dz/dW$
+\end_inset
+
+ is 
+\begin_inset Formula $(m)\times(m\times n).$
+\end_inset
+
+ By the definition of generalized matrix multiplication, we have:
+\begin_inset Formula 
+\begin{align}
+\left(\frac{d\ell}{dW}\right)_{(1),(i,j)} & =\sum_{k}\left(\frac{d\ell}{dz}\right)_{(1),(k)}\left(\frac{dz}{dW}\right)_{(k),(i,j)}\nonumber \\
+ & =\sum_{k}\left(\frac{d\ell}{dz}\right)_{(1),(k)}\delta_{ik}x_{j}\label{eq:dW_chain_rule_deriv_1}\\
+ & =\left(\frac{d\ell}{dz}\right)_{(1),(i)}x_{j}\label{eq:dW_chain_rule_deriv_2}
+\end{align}
+
+\end_inset
+
+with individual steps explained below:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dW_chain_rule_deriv_1"
+
+\end_inset
+
+) - substitute the previously derived value for 
+\begin_inset Formula $dz/dW.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dW_chain_rule_deriv_2"
+
+\end_inset
+
+) - simplify to the outer product of 
+\begin_inset Formula $d\ell/dz$
+\end_inset
+
+ and 
+\begin_inset Formula $dz/dW$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Proof
+To compute 
+\begin_inset Formula $d\ell/dx$
+\end_inset
+
+ and 
+\begin_inset Formula $d\ell/db,$
+\end_inset
+
+ apply the chain rule and substitute previously derived Jacobians.
+ 
 \end_layout
 
 \begin_layout Proposition
@@ -292,6 +435,186 @@ Calculations for
  are omitted because they are similar to the above.
 \end_layout
 
+\begin_layout Proposition
+Let 
+\begin_inset Formula $Z=WX+\textnormal{broadcast}(b)$
+\end_inset
+
+ where 
+\begin_inset Formula $Z$
+\end_inset
+
+ is a 
+\begin_inset Formula $n\times m$
+\end_inset
+
+ matrix, 
+\begin_inset Formula $W$
+\end_inset
+
+ is a 
+\begin_inset Formula $n\times r$
+\end_inset
+
+ matrix, 
+\begin_inset Formula $X$
+\end_inset
+
+ is a 
+\begin_inset Formula $r\times m$
+\end_inset
+
+ matrix, and 
+\begin_inset Formula $b$
+\end_inset
+
+ is a 
+\begin_inset Formula $n\times1$
+\end_inset
+
+ vector.
+ Let 
+\begin_inset Formula $\ell=f(Z)$
+\end_inset
+
+ be a scalar.
+ Then
+\begin_inset Formula 
+\begin{align*}
+\frac{d\ell}{dW} & =\frac{d\ell}{dZ}X^{\top}\\
+\frac{d\ell}{dX} & =W^{\top}\frac{d\ell}{dZ}\\
+\frac{d\ell}{db} & =\frac{d\ell}{dZ}\boldsymbol{1}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\boldsymbol{1}$
+\end_inset
+
+ is a vector of ones (equivalently, 
+\begin_inset Formula $d\ell/db$
+\end_inset
+
+ is the vector computed by summing the values across each row of 
+\begin_inset Formula $d\ell/dZ$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Proof
+To compute 
+\begin_inset Formula $d\ell/dW$
+\end_inset
+
+ first apply the chain rule:
+\begin_inset Formula 
+\[
+\frac{d\ell}{dW}=\frac{d\ell}{dZ}\frac{dZ}{dW}
+\]
+
+\end_inset
+
+and compute the entries of the generalized Jacobian:
+\begin_inset Formula 
+\begin{align}
+\left(\frac{d\ell}{dW}\right)_{(1),(i,j)} & =\sum_{(p,q)}\left(\frac{d\ell}{dZ}\right)_{(1),(p,q)}\left(\frac{dZ}{dW}\right)_{(p,q),(i,j)}\nonumber \\
+ & =\sum_{(p,q)}\left(\frac{d\ell}{dZ}\right)_{(1),(p,q)}\delta_{ip}X_{j,q}\label{eq:dW_chain_rule_multi_deriv_1}\\
+ & =\sum_{q}\left(\frac{d\ell}{dZ}\right)_{(1),(i,q)}X_{j,q}\label{eq:dW_chain_rule_multi_deriv_2}\\
+ & =\sum_{q}\left(\frac{d\ell}{dZ}\right)_{(1),(i,q)}\left(X^{\top}\right)_{q,j}\label{eq:dW_chain_rule_multi_deriv_3}
+\end{align}
+
+\end_inset
+
+and thus we conclude that 
+\begin_inset Formula $d\ell/dW=(d\ell/dZ)X^{\top}.$
+\end_inset
+
+ Individual steps explained are explained below:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dW_chain_rule_multi_deriv_1"
+
+\end_inset
+
+) - substitute derived value of 
+\begin_inset Formula $dZ/dW$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dW_chain_rule_multi_deriv_2"
+
+\end_inset
+
+) - simplify out 
+\begin_inset Formula $\delta_{ip}.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dW_chain_rule_multi_deriv_3"
+
+\end_inset
+
+) - flip indices of 
+\begin_inset Formula $X_{j,q}$
+\end_inset
+
+ to take the form of a matrix multiplication.
+\end_layout
+
+\end_deeper
+\begin_layout Proof
+To compute 
+\begin_inset Formula $d\ell/dX$
+\end_inset
+
+, again apply the chain rule and compute the entries of the generalized
+ Jacobian:
+\begin_inset Formula 
+\begin{align*}
+\left(\frac{d\ell}{dX}\right)_{(1),(i,j)} & =\sum_{(p,q)}\left(\frac{d\ell}{dZ}\right)_{(1),(p,q)}\left(\frac{dZ}{dX}\right)_{(p,q),(i,j)}\\
+ & =\sum_{(p,q)}\left(\frac{d\ell}{dZ}\right)_{(1),(p,q)}\delta_{jq}W_{p,i}\\
+ & =\sum_{p}\left(\frac{d\ell}{dZ}\right)_{(1),(p,j)}W_{p,i}\\
+ & =\sum_{p}\left(W^{\top}\right)_{i,p}\left(\frac{d\ell}{dZ}\right)_{(1),(p,j)}.
+\end{align*}
+
+\end_inset
+
+To compute 
+\begin_inset Formula $d\ell/db,$
+\end_inset
+
+ again apply the chain rule and compute:
+\begin_inset Formula 
+\begin{align*}
+\left(\frac{d\ell}{db}\right)_{(1),(i)} & =\sum_{(p,q)}\left(\frac{d\ell}{dZ}\right)_{(1),(p,q)}\left(\frac{dZ}{db}\right)_{(p,q),(i)}\\
+ & =\sum_{(p,q)}\left(\frac{d\ell}{dZ}\right)_{(1),(p,q)}\delta_{ip}\\
+ & =\sum_{q}\left(\frac{d\ell}{dZ}\right)_{(1),(i,q)}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Non-Linear (Activation) Functions
 \end_layout
@@ -396,7 +719,7 @@ reference "eq:sigmoid_deriv_3"
 
 \end_inset
 
-) - simplify the partial derivatives.
+) - simplify the partial derivative.
 \end_layout
 
 \begin_layout Itemize
@@ -540,7 +863,7 @@ reference "eq:tanh_deriv_4"
 \end_inset
 
 ) - simplify using the identity 
-\begin_inset Formula $\sigma(2z)=(a+1)/2.$
+\begin_inset Formula $\sigma(2z_{i})=(a_{i}+1)/2.$
 \end_inset
 
 
@@ -756,13 +1079,13 @@ Gradient of cross-entropy loss
 \end_inset
 
 Let 
-\begin_inset Formula $L=\textnormal{CE}(y,a).$
+\begin_inset Formula $\ell=\textnormal{CE}(y,a).$
 \end_inset
 
  Then
 \begin_inset Formula 
 \[
-\frac{dL}{da}=-\left(y\oslash a\right)^{\top}
+\frac{d\ell}{da}=-\left(y\oslash a\right)^{\top}
 \]
 
 \end_inset
@@ -770,7 +1093,7 @@ Let
 and
 \begin_inset Formula 
 \[
-\frac{\partial L}{\partial a_{i}}=-\frac{y_{i}}{a_{i}}
+\frac{\partial\ell}{\partial a_{i}}=-\frac{y_{i}}{a_{i}}
 \]
 
 \end_inset
@@ -794,7 +1117,7 @@ where
 Taking partial derivatives:
 \begin_inset Formula 
 \[
-\frac{\partial L}{\partial a_{i}}=\frac{\partial}{\partial a_{i}}\left(-\sum_{j}y_{j}\log a_{j}\right)=\frac{\partial}{\partial a_{i}}\left(-y_{i}\log a_{i}\right)=-\frac{y_{i}}{a_{i}}.
+\frac{\partial\ell}{\partial a_{i}}=\frac{\partial}{\partial a_{i}}\left(-\sum_{j}y_{j}\log a_{j}\right)=\frac{\partial}{\partial a_{i}}\left(-y_{i}\log a_{i}\right)=-\frac{y_{i}}{a_{i}}.
 \]
 
 \end_inset
@@ -813,7 +1136,7 @@ Gradient of softmax cross-entropy loss
 \end_inset
 
 Let 
-\begin_inset Formula $L=\textnormal{CE}(y,a),$
+\begin_inset Formula $\ell=\textnormal{CE}(y,a),$
 \end_inset
 
  
@@ -827,7 +1150,7 @@ Let
  Then
 \begin_inset Formula 
 \[
-\frac{dL}{dz}=\left(a-y\right)^{\top}.
+\frac{d\ell}{dz}=\left(a-y\right)^{\top}.
 \]
 
 \end_inset
@@ -839,7 +1162,7 @@ Let
 Applying the chain rule:
 \begin_inset Formula 
 \begin{eqnarray}
-\frac{dL}{dz} & = & \frac{dL}{da}\frac{da}{dz}\nonumber \\
+\frac{d\ell}{dz} & = & \frac{d\ell}{da}\frac{da}{dz}\nonumber \\
  & = & -\left(y\oslash a\right)^{\top}\left(\mbox{diag}(a)-aa^{\top}\right)\label{eq:cross_entropy_deriv_1}\\
  & = & -\left(y\oslash a\right)^{\top}\mbox{diag}(a)+\left(y\oslash a\right)aa^{\top}\label{eq:cross_entropy_deriv_2}\\
  & = & \left(a-y\right)^{\top}\label{eq:cross_entropy_deriv_3}
@@ -907,5 +1230,121 @@ where we note that
 \end_layout
 
 \end_deeper
+\begin_layout Section
+Recurrent Neural Networks
+\end_layout
+
+\begin_layout Standard
+Define a recurrent neural network by the equations:
+\begin_inset Formula 
+\begin{align*}
+a^{[i]} & =f(\alpha^{[i]})\\
+\alpha^{[i]} & =Vh^{[i]}+c\\
+h^{[i]} & =g(\beta^{[i]})\\
+\beta^{[i]} & =Wx^{[i]}+Uh^{[i-1]}+b
+\end{align*}
+
+\end_inset
+
+where:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $a^{[i]}$
+\end_inset
+
+ represents the 
+\begin_inset Formula $i$
+\end_inset
+
+th output (activation).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $h^{[i]}$
+\end_inset
+
+ represents the 
+\begin_inset Formula $i$
+\end_inset
+
+th hidden value.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x^{[i]}$
+\end_inset
+
+ represents the 
+\begin_inset Formula $i$
+\end_inset
+
+th input.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $f$
+\end_inset
+
+ and 
+\begin_inset Formula $g$
+\end_inset
+
+ represent non-linearities.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $W,$
+\end_inset
+
+ 
+\begin_inset Formula $U,$
+\end_inset
+
+ 
+\begin_inset Formula $V,$
+\end_inset
+
+ 
+\begin_inset Formula $b,$
+\end_inset
+
+ and 
+\begin_inset Formula $c$
+\end_inset
+
+ represent the parameters to be learned for the network (these are fixed
+ across all steps 
+\begin_inset Formula $i$
+\end_inset
+
+).
+ Additionally, we assume 
+\begin_inset Formula $h^{[0]}$
+\end_inset
+
+ is another potentially learned parameter.
+\end_layout
+
+\begin_layout Standard
+We assume the loss for the 
+\begin_inset Formula $i$
+\end_inset
+
+th step is given by 
+\begin_inset Formula $\ell^{[i]}=L(y^{[i]},a^{[i]})$
+\end_inset
+
+ and the total cost is given by
+\begin_inset Formula 
+\[
+J=\sum_{i}\ell^{[i]}.
+\]
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
