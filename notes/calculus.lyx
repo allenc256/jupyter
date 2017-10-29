@@ -208,7 +208,7 @@ Let
  Then
 \begin_inset Formula 
 \begin{align*}
-\frac{d\ell}{dW} & =\left(\frac{d\ell}{dz}\right)^{\top}x^{\top}\\
+\frac{d\ell}{dW} & =\frac{d\ell}{dz}\otimes x=\left(\frac{d\ell}{dz}\right)^{\top}x^{\top}\\
 \frac{d\ell}{dx} & =\frac{d\ell}{dz}W\\
 \frac{d\ell}{db} & =\frac{d\ell}{dz}.
 \end{align*}
