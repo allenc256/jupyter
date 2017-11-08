@@ -667,8 +667,9 @@ Taking partial derivatives:
 \frac{\partial a_{i}}{\partial z_{j}} & =\frac{\partial}{\partial z_{j}}\left(\frac{1}{1+e^{-z_{i}}}\right)\nonumber \\
  & =\delta_{ij}\frac{\partial}{\partial z_{i}}\left(\frac{1}{1+e^{-z_{i}}}\right)\label{eq:sigmoid_deriv_1}\\
  & =-\delta_{ij}\frac{1}{\left(1+e^{-z_{i}}\right)^{2}}\frac{\partial}{\partial z_{i}}\left(1+e^{-z_{i}}\right)\label{eq:sigmoid_deriv_2}\\
- & =\delta_{ij}\frac{e^{z_{i}}}{\left(1+e^{-z_{i}}\right)^{2}}\label{eq:sigmoid_deriv_3}\\
- & =\delta_{ij}a_{i}(1-a_{i})\label{eq:sigmoid_deriv_4}
+ & =\delta_{ij}\frac{e^{-z_{i}}}{\left(1+e^{-z_{i}}\right)^{2}}\label{eq:sigmoid_deriv_3}\\
+ & =\delta_{ij}\frac{1}{1+e^{-z_{i}}}\left(\frac{e^{-z_{i}}}{1+e^{-z_{i}}}\right)\label{eq:sigmoid_deriv_4}\\
+ & =\delta_{ij}a_{i}(1-a_{i})\label{eq:sigmoid_deriv_5}
 \end{align}
 
 \end_inset
@@ -727,6 +728,17 @@ Eq (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:sigmoid_deriv_4"
+
+\end_inset
+
+) - factor quotient into two terms.
+\end_layout
+
+\begin_layout Itemize
+Eq (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:sigmoid_deriv_5"
 
 \end_inset
 
