@@ -26,7 +26,7 @@ class Encoding():
         self._index = {}
         self._pqueue = SortedList(key=lambda b: b.freq)
         self._unigram_dict = {}
-        self._terminal_unigrams = set()
+        self._terminal_unigrams = collections.Counter()
         
     def _remove_bigram(self, b):
         b.index_prev.index_next = b.index_next
@@ -125,6 +125,10 @@ class Encoding():
             word_tail.word_prev = word_head
 
             self._words[word] = word_prev = word_head
+            
+            if len(word) == 1:
+                self._terminal_unigrams[word] += freq
+                continue
 
             for j in range(len(word) - 1):
                 u0 = word[j]
@@ -150,17 +154,18 @@ class Encoding():
             if len(self._index) == 0:
                 break
 
-            index_head = max(self._index.values(), key=lambda x: x.freq)
+            index_head = self._pqueue[-1]
             u0 = index_head.u0
             u1 = index_head.u1
 
             new_unigram = len(self._unigram_dict)
+            new_unigram_freq = index_head.freq
 
             n = index_head.index_next
             while n.exists:
                 self._check_invariants()
                 if not n.word_prev.exists and not n.word_next.exists:
-                    self._terminal_unigrams.add(new_unigram)
+                    self._terminal_unigrams[new_unigram] += new_unigram_freq
                 if n.word_prev.exists:
                     tmp = n.word_prev
                     self._insert_bigram(self._Bigram(n.word_prev.u0, new_unigram, n.freq), n.word_prev)
@@ -180,42 +185,46 @@ class Encoding():
             
         print('building: %d/%d' % (num_iterations, num_iterations))
     
-    def _build_encoding_dict(self):
-        d = {}
-        seen = set()
+    def _build_encoding_dict(self, count):
+        u_freqs = collections.Counter(self._terminal_unigrams)
         
-        # include non-terminal unigrams mentioned in bigram index
         for _, head in self._words.items():
             n = head.word_next
             while n.exists:
-                if not (n.u0 in seen):
-                    d[len(d)] = self._unigram_dict[n.u0] if isinstance(n.u0, int) else n.u0
-                    seen.add(n.u0)
+                u_freqs[n.u0] += n.freq
+                if not n.word_next.exists:
+                    u_freqs[n.u1] += n.freq
                 n = n.word_next
+
+        d = {}
         
-        # include terminal unigrams (no longer indexed)
-        for u in self._terminal_unigrams:
-            if not (u in seen):
-                d[len(d)] = self._unigram_dict[u]
+        singles = [u for u, _ in u_freqs.most_common() if not isinstance(u, int)]
+        compounds = [u for u, _ in u_freqs.most_common() if isinstance(u, int)]
         
-        # include individual alphabet
-        for word in self._words:
-            for u in word:
-                if not (u in seen):
-                    d[len(d)] = u
-                    seen.add(u)
+        # add single-letter unigrams (these take priority over compound unigrams)
+        for u in singles:
+            if len(d) >= count:
+                break
+            d[len(d)] = u
         
+        # add compound unigrams
+        for u in compounds:
+            if len(d) >= count:
+                break
+            d[len(d)] = self._unigram_dict[u]
+        
+        # convert final dictionary into a table
         result = [None] * len(d)
         for i, w in d.items():
             result[i] = w
-        result.sort()
+        #result.sort()
         
         return result
 
-    def build(self, word_freqs, num_iterations):
+    def build(self, word_freqs, count):
         self._index_bigrams(word_freqs)
-        self._combine_bigrams(num_iterations)
-        return self._build_encoding_dict()
+        self._combine_bigrams(count)
+        return self._build_encoding_dict(count)
 
 WordFragment = collections.namedtuple('WordFragment', ['index', 'text'])
 
