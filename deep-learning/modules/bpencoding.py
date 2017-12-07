@@ -234,9 +234,10 @@ class Encoder():
             self._children = {}
             self._fragment = None
     
-    def __init__(self, encoding_table):
+    def __init__(self, encoding_table, encode_unknowns=True):
         self._table = [WordFragment(index, word) for index, word in enumerate(encoding_table)]
         self._root = self._Node()
+        self._unknown = WordFragment(len(self._table), '?') if encode_unknowns else None
     
         for fragment in self._table:
             self._insert(self._root, fragment, fragment.text)
@@ -264,7 +265,10 @@ class Encoder():
                 fragment = node._fragment
                 
         if not fragment:
-            raise ValueError('word not encodable: %s' % word)
+            if self._unknown:
+                return self._unknown
+            else:
+                raise ValueError('word not encodable: %s' % word)
         
         return fragment
 
