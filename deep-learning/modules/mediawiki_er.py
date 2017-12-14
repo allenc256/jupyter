@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tqdm import tqdm
+from tqdm import tqdm_notebook
 from collections import namedtuple
 
 def reset_tf(sess = None, log_device_placement = False):
@@ -16,8 +16,10 @@ class BaseModel:
     
     def _parse_example(self, example_proto):
         features = {
+            'page_id': tf.FixedLenFeature([1], tf.int64),
+            'para_id': tf.FixedLenFeature([1], tf.int64),
+            'sentence_id': tf.FixedLenFeature([1], tf.int64),
             'inputs': tf.VarLenFeature(tf.int64),
-            'word_endings': tf.VarLenFeature(tf.int64),
             'targets': tf.VarLenFeature(tf.int64)
         }
 
@@ -30,9 +32,11 @@ class BaseModel:
             result = tf.pad(result, [[0, self._hp.max_sequence_length - tf.shape(result)[0]]])
             return result
 
-        return (convert_and_pad(parsed['inputs']),
+        return (parsed['page_id'],
+                parsed['para_id'],
+                parsed['sentence_id'],
+                convert_and_pad(parsed['inputs']),
                 tf.shape(parsed['inputs'])[0],
-                convert_and_pad(parsed['word_endings']),
                 convert_and_pad(parsed['targets']))
     
     def _build_data_pipeline(self):
@@ -47,14 +51,25 @@ class BaseModel:
             dataset = dataset.batch(self._hp.pipeline_batch_size)
 
             self._dataset_iterator = dataset.make_initializable_iterator()
-            (input_sequences, input_lengths, input_word_endings, target_sequences) = self._dataset_iterator.get_next()
-
+            (input_page_ids,
+             input_para_ids,
+             input_sentence_ids,
+             input_sequences, 
+             input_lengths, 
+             target_sequences) = self._dataset_iterator.get_next()
+            
+            self._input_page_ids = tf.placeholder_with_default(input_page_ids,
+                                                               shape = [None, 1],
+                                                               name = 'input_page_ids')
+            self._input_para_ids = tf.placeholder_with_default(input_para_ids,
+                                                               shape = [None, 1],
+                                                               name = 'input_para_ids')
+            self._input_sentence_ids = tf.placeholder_with_default(input_sentence_ids,
+                                                                   shape = [None, 1],
+                                                                   name = 'input_sentence_ids')
             self._input_sequences = tf.placeholder_with_default(input_sequences,
                                                                 shape = [None, self._hp.max_sequence_length],
                                                                 name = 'input_sequences')
-            self._input_word_endings = tf.placeholder_with_default(input_word_endings,
-                                                                   shape = [None, self._hp.max_sequence_length],
-                                                                   name = 'input_word_endings')
             self._input_lengths = tf.placeholder_with_default(input_lengths,
                                                               shape = [None],
                                                               name = 'input_lengths')
@@ -91,9 +106,9 @@ class BaseModel:
             self._false_negatives = tf.reduce_sum(tf.maximum(self._target_sequences - self._output_sequences, 0))
 
     def _build_training_model(self):
-        global_step = tf.Variable(0, name = 'global_step', trainable = False)
+        self._global_step = tf.Variable(0, name = 'global_step', trainable = False)
         optimizer = tf.train.AdamOptimizer(learning_rate = self._hp.learning_rate)
-        self._train_op = optimizer.minimize(self._mean_loss, global_step = global_step)
+        self._train_op = optimizer.minimize(self._mean_loss, global_step = self._global_step)
         
     def _build_prediction_model(self):
         self._output_logits = self._build_prediction_model_internal()
@@ -137,7 +152,7 @@ class BaseModel:
         })
 
         if show_progress:
-            progress = tqdm()
+            progress = tqdm_notebook()
 
         while True:
             try:
@@ -174,8 +189,9 @@ class BaseModel:
         recall = cum_true_positives / (cum_true_positives + cum_false_negatives)
         F1 = 2 * (precision * recall) / (precision + recall)
 
-        print('%s: loss=%g, precision=%g, recall=%g, F1=%g' % (header,
-                                                               cum_loss/cum_input_length, 
-                                                               precision, 
-                                                               recall, 
-                                                               F1))
+        print('%s (%d): loss=%g, precision=%g, recall=%g, F1=%g' % (header,
+                                                                    tf.train.global_step(sess, self._global_step),
+                                                                    cum_loss/cum_input_length, 
+                                                                    precision, 
+                                                                    recall, 
+                                                                    F1))
