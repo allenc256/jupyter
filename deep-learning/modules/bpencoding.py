@@ -1,5 +1,5 @@
 import collections
-import datetime
+from tqdm import tqdm_notebook
 from sortedcontainers import SortedList
 
 class Encoding():
@@ -110,15 +110,7 @@ class Encoding():
             freq = b.freq
     
     def _index_bigrams(self, word_freqs):
-        start = datetime.datetime.now()
-        
-        for i, (word, freq) in enumerate(word_freqs):
-            if i % 10000 == 0:
-                finish = datetime.datetime.now()
-                elapsed = (finish - start).total_seconds() * 1000.0
-                start = finish
-                print('indexing: %d/%d (%g ms)' % (i, len(word_freqs), elapsed))
-
+        for word, freq in tqdm_notebook(word_freqs):
             word_head = self._Bigram(None, None, 0)
             word_tail = self._Bigram(None, None, 0)
             word_head.word_next = word_tail
@@ -137,20 +129,10 @@ class Encoding():
                 self._insert_bigram(b, word_prev)
                 word_prev = b
 
-        print('indexed: %d/%d' % (len(word_freqs), len(word_freqs)))
-
         self._check_invariants()
     
     def _combine_bigrams(self, num_iterations=1):
-        start = datetime.datetime.now()
-        
-        for i in range(num_iterations):
-            if i % 100 == 0:
-                finish = datetime.datetime.now()
-                elapsed = (finish - start).total_seconds() * 1000.0
-                start = finish
-                print('building: %d/%d (%g ms)' % (i, num_iterations, elapsed))
-
+        for i in tqdm_notebook(range(num_iterations)):
             if len(self._index) == 0:
                 break
 
@@ -182,8 +164,6 @@ class Encoding():
             w0 = self._unigram_dict[u0] if isinstance(u0, int) else u0
             w1 = self._unigram_dict[u1] if isinstance(u1, int) else u1
             self._unigram_dict[new_unigram] = w0 + w1
-            
-        print('building: %d/%d' % (num_iterations, num_iterations))
     
     def _build_encoding_dict(self, count):
         u_freqs = collections.Counter(self._terminal_unigrams)
