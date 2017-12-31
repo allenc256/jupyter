@@ -1,0 +1,4 @@
+train 0: time=0:06:08.154327, step=1241, loss=0.772942, accuracy=0.869904
+dev 0: time=0:00:03.766122, step=1241, loss=0.254948, accuracy=0.9536
+train 1: time=0:06:07.247083, step=2482, loss=0.255689, accuracy=0.948416
+dev 1: time=0:00:03.400149, step=2482, loss=0.235663, accuracy=0.957
