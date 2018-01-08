@@ -1,0 +1,4 @@
+train 0: time=0:01:35.782300, step=1929, loss=9.80121, precision=0.595679, recall=0.523342, F=0.557172
+dev 0: time=0:00:01.488481, step=1929, loss=7.29219, precision=0.823297, recall=0.463839, F=0.593375
+train 1: time=0:01:33.516459, step=3858, loss=6.52164, precision=0.762809, recall=0.622425, F=0.685503
+dev 1: time=0:00:01.351308, step=3858, loss=6.33026, precision=0.847763, recall=0.564746, F=0.677901
