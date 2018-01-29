@@ -1,0 +1,8 @@
+train_0: time=0:07:28.592024, step=1369, loss=3.18172, exact_match=0.221121, precision=0, recall=0, F1=0
+dev_0: time=0:00:19.594637, step=1369, loss=2.85855, exact_match=0.269253, precision=0, recall=0, F1=0
+train_1: time=0:07:30.179191, step=2738, loss=2.49441, exact_match=0.342972, precision=0, recall=0, F1=0
+dev_1: time=0:00:19.530662, step=2738, loss=2.49505, exact_match=0.340776, precision=0, recall=0, F1=0
+train_2: time=0:07:32.337437, step=4107, loss=2.11155, exact_match=0.426203, precision=0, recall=0, F1=0
+dev_2: time=0:00:19.550863, step=4107, loss=2.31234, exact_match=0.386566, precision=0, recall=0, F1=0
+train_3: time=0:07:28.535425, step=5476, loss=1.81483, exact_match=0.492734, precision=0, recall=0, F1=0
+dev_3: time=0:00:19.264320, step=5476, loss=2.24439, exact_match=0.409082, precision=0, recall=0, F1=0
