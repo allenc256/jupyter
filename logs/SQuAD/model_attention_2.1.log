@@ -1,0 +1,10 @@
+train_0: time=0:13:02.060795, step=1825, loss=0.39464, precision=0.0257536, recall=0.917825, F1=0.0501014
+dev_0: time=0:00:30.542448, step=1825, loss=0.353971, precision=0.0235983, recall=0.966649, F1=0.0460718
+train_1: time=0:12:55.546468, step=3650, loss=0.359223, precision=0.0267032, recall=0.93225, F1=0.0519193
+dev_1: time=0:00:30.101991, step=3650, loss=0.375611, precision=0.0237025, recall=0.917641, F1=0.0462114
+train_2: time=0:12:51.979269, step=5475, loss=0.378062, precision=0.0261185, recall=0.907394, F1=0.0507755
+dev_2: time=0:00:30.222099, step=5475, loss=0.383062, precision=0.0240472, recall=0.890067, F1=0.0468293
+train_3: time=0:12:51.742014, step=7300, loss=0.375736, precision=0.026051, recall=0.921791, F1=0.0506701
+dev_3: time=0:00:30.125003, step=7300, loss=0.378652, precision=0.0233073, recall=0.915269, F1=0.045457
+train_4: time=0:12:51.760749, step=9125, loss=0.369502, precision=0.0261817, recall=0.930462, F1=0.0509303
+dev_4: time=0:00:29.595066, step=9125, loss=0.402671, precision=0.022358, recall=0.928135, F1=0.0436641
